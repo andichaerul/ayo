@@ -25,3 +25,9 @@ Route::get("/cabang-olahraga", 'CabangOlahragaController@index');
 Route::post("/cabang-olahraga/simpan", 'CabangOlahragaController@simpan');
 Route::post("/cabang-olahraga/update", 'CabangOlahragaController@update');
 Route::post("/cabang-olahraga/deleted", 'CabangOlahragaController@deleted');
+
+// Organisasi
+Route::get("/organisasi", 'OrganisasiController@index');
+Route::post("/organisasi/simpan", 'OrganisasiController@simpan');
+Route::post("/organisasi/update", 'OrganisasiController@update');
+Route::post("/organisasi/deleted", 'OrganisasiController@deleted');

@@ -62,6 +62,9 @@
                     <ul class="sidebar-menu">
                         <li class="menu-header">Dashboard</li>
                         <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i> <span>Credits</span></a></li>
+                        <li class="menu-header">Master Data</li>
+                        <li><a class="nav-link" href="{{ url('/cabang-olahraga') }}"><i class="fas fa-pencil-ruler"></i> <span>Cabang Olahraga</span></a></li>
+                        <li><a class="nav-link" href="{{ url('/organisasi') }}"><i class="fas fa-pencil-ruler"></i> <span>Organisasi</span></a></li>
                     </ul>
                 </aside>
             </div>
