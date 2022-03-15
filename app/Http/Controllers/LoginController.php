@@ -31,6 +31,7 @@ class LoginController extends Controller
     {
         session()->put([
             "isLogin" => true,
+            "userId" => $userData->users_id,
             "namaLengkap" => $userData->users_nama_lengkap
         ]);
     }

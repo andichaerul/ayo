@@ -19,3 +19,9 @@ Route::get("/login", 'LoginController@index');
 Route::post("/login/auth", 'LoginController@auth');
 
 Route::get("/", 'HomeController@index');
+
+// Cabang Olahraga
+Route::get("/cabang-olahraga", 'CabangOlahragaController@index');
+Route::post("/cabang-olahraga/simpan", 'CabangOlahragaController@simpan');
+Route::post("/cabang-olahraga/update", 'CabangOlahragaController@update');
+Route::post("/cabang-olahraga/deleted", 'CabangOlahragaController@deleted');

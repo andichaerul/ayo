@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Layout &rsaquo; Default &mdash; Stisla</title>
+    <title>{{ $titlePage }} | Andi Chaerul</title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -76,18 +76,20 @@
                     <div class="section-body">
                         <div class="card">
                             <div class="card-header">
-                                <h4>@yield('page-header')</h4>
+                                <h4>@yield('title')</h4>
                             </div>
                             <div class="card-body">
-                                @yield('page-body')
+                                @yield('body')
                             </div>
                             <div class="card-footer bg-whitesmoke">
-                                @yield('page-footer')
+                                @yield('footer')
                             </div>
                         </div>
                     </div>
                 </section>
             </div>
+
+            @yield('modal')
             <footer class="main-footer">
                 <div class="footer-left">
                     Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
@@ -114,6 +116,7 @@
     <script src="{{ url('/') }}/stisla/js/custom.js"></script>
 
     <!-- Page Specific JS File -->
+    @yield('script')
 </body>
 
 </html>
