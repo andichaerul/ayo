@@ -3,17 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 
 Route::get("/login", 'LoginController@index');
 Route::post("/login/auth", 'LoginController@auth');
@@ -31,3 +20,14 @@ Route::get("/organisasi", 'OrganisasiController@index');
 Route::post("/organisasi/simpan", 'OrganisasiController@simpan');
 Route::post("/organisasi/update", 'OrganisasiController@update');
 Route::post("/organisasi/deleted", 'OrganisasiController@deleted');
+
+Route::get("/list-member/{id}", 'ListMemberController@index');
+Route::post("/list-member/{id}/simpan", 'ListMemberController@simpan');
+
+// Team
+Route::get("/team", 'TeamController@index');
+Route::post("/team/simpan", 'TeamController@simpan');
+
+// Member
+Route::get("/member", 'MemberController@index');
+Route::post("/member/simpan", 'MemberController@simpan');

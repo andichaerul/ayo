@@ -30,7 +30,7 @@
                 <ul class="navbar-nav navbar-right">
                     <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <img alt="image" src="{{ url('/') }}/stisla/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-                            <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                            <div class="d-sm-none d-lg-inline-block">{{ session()->get("namaLengkap") }}</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="dropdown-title">Logged in 5 min ago</div>
@@ -54,17 +54,17 @@
             <div class="main-sidebar">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html">Stisla</a>
+                        <a href="index.html">OYA</a>
                     </div>
                     <div class="sidebar-brand sidebar-brand-sm">
                         <a href="index.html">St</a>
                     </div>
                     <ul class="sidebar-menu">
-                        <li class="menu-header">Dashboard</li>
-                        <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i> <span>Credits</span></a></li>
                         <li class="menu-header">Master Data</li>
                         <li><a class="nav-link" href="{{ url('/cabang-olahraga') }}"><i class="fas fa-pencil-ruler"></i> <span>Cabang Olahraga</span></a></li>
                         <li><a class="nav-link" href="{{ url('/organisasi') }}"><i class="fas fa-pencil-ruler"></i> <span>Organisasi</span></a></li>
+                        <li><a class="nav-link" href="{{ url('/team') }}"><i class="fas fa-pencil-ruler"></i> <span>Team</span></a></li>
+                        <li><a class="nav-link" href="{{ url('/member') }}"><i class="fas fa-pencil-ruler"></i> <span>Member</span></a></li>
                     </ul>
                 </aside>
             </div>

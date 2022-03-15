@@ -28,7 +28,6 @@ class OrganisasiController extends Controller
             "organisasi_tahun" => "required",
             "organisasi_alamat" => "required",
             "cab_olahraga_id" => "required|exists:cab_olahraga,cab_olahraga_id",
-
         ]);
 
         if ($validasi->fails()) {

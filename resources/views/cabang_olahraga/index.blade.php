@@ -96,7 +96,7 @@
                         location.reload();
                     } else {
                         try {
-                            alert(response[0]);
+                            alert(response[0][0]);
                         } catch (error) {
                             alert("Gagal saat menyimpan data");
                         }
@@ -137,7 +137,7 @@
                         location.reload();
                     } else {
                         try {
-                            alert(response[0]);
+                            alert(response[0][0]);
                         } catch (error) {
                             alert("Gagal saat menyimpan data");
                         }
@@ -170,7 +170,7 @@
                             location.reload();
                         } else {
                             try {
-                                alert(response[0]);
+                                alert(response[0][0]);
                             } catch (error) {
                                 alert("Gagal saat menyimpan data");
                             }
