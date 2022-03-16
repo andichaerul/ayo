@@ -9,8 +9,8 @@ class Organisasi extends Model
 {
     use SoftDeletes;
 
-    public function toCabangOlahraga()
+    public function cabangOlahraga()
     {
-        return $this->hasOne(CabangOlahraga::class, "cab_olahraga_id", "cab_olahraga_id");
+        return $this->belongsTo(CabangOlahraga::class);
     }
 }

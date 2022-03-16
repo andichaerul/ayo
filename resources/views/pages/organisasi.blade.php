@@ -1,6 +1,6 @@
 @extends('layout')
 @section('title')
-    <button class="btn btn-primary" id="tambah">Tambah Organisasi</button>
+    <button class="btn btn-primary" onclick="showFormTambah()">Tambah Organisasi</button>
 @endsection
 @section('body')
     <table class="table table-bordered">
@@ -20,16 +20,25 @@
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-center">{{ $row->organisasi_name }}</td>
-                    <td class="text-center">{{ $row->organisasi_tahun }}</td>
-                    <td class="text-center">{{ $row->organisasi_alamat }}</td>
-                    <td class="text-center">{{ $row->toCabangOlahraga->cab_olahraga_name }}</td>
+                    <td class="text-center">{{ $row->nama_organisasi }}</td>
+                    <td class="text-center">{{ $row->tahun_berdiri }}</td>
+                    <td class="text-center">{{ $row->alamat }}</td>
+                    <td class="text-center">{{ $row->cabangOlahraga->name_cab }}</td>
                     <td class="text-center">
                         <span>
-                            <button type="button" class="btn btn-primary" onclick="update('{{ $row->organisasi_name }}','{{ $row->organisasi_tahun }}','{{ $row->organisasi_alamat }}','{{ $row->cab_olahraga_id }}',{{ $row->organisasi_id }})">Update</button>
+                            <button type="button" class="btn btn-primary" onclick="showFormUpdate(
+                                    '{{ $row->id }}',
+                                    '{{ $row->nama_organisasi }}',
+                                    '{{ $row->tahun_berdiri }}',
+                                    '{{ $row->alamat }}',
+                                    '{{ $row->cabangOlahraga->id }}')">Update
+                            </button>
                         </span>
                         <span>
-                            <button type="button" class="btn btn-danger" onclick="deleted('{{ $row->organisasi_name }}','{{ $row->organisasi_id }}')">Deleted</button>
+                            <button type="button" class="btn btn-danger" onclick="deletedOrganisasi(
+                                    '{{ $row->nama_organisasi }}',
+                                    '{{ $row->id }}')">Deleted
+                            </button>
                         </span>
                     </td>
                 </tr>
@@ -48,47 +57,31 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control" type="text" placeholder="Nama Organisasi" id="nama"><br>
-                    <input class="form-control" type="text" placeholder="Tahun Organisasi" id="tahun"><br>
-                    <textarea rows="5" class="form-control" type="text" placeholder="Alamat Organisasi" id="alamat"></textarea><br>
-                    <select class="form-control" placeholder="Cabang Olahraga" id="cab">
-                        <option>Cabang Olahraga</option>
-                        @foreach ($cabangOlahraga as $row)
-                            <option value="{{ $row->cab_olahraga_id }}">{{ $row->cab_olahraga_name }}</option>
-                        @endforeach
-                    </select>
+                    <input class="form-control update" type="hidden" id="idOrganisasi">
+                    <div class="form-group">
+                        <label for="">Nama Organisasi</label>
+                        <input class="form-control create update" type="text" placeholder="Nama Organisasi" id="namaOrganisasi">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Tahun Organisasi</label>
+                        <input class="form-control create update" type="text" placeholder="Tahun Organisasi" id="tahunOrganisasi">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Alamat</label>
+                        <textarea class="form-control create update" type="text" placeholder="Alamat Organisasi" id="alamatOrganisasi" style="height: 10em"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Cabang Olahraga</label>
+                        <select class="form-control create update" placeholder="Cabang Olahraga" id="cabOlahraga">
+                            <option>Pilih Cabang Olahraga</option>
+                            @foreach ($cabangOlahraga as $row)
+                                <option value="{{ $row->id }}">{{ $row->name_cab }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="simpan">Simpan</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" tabindex="-1" role="dialog" id="formUpdate">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Organisasi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input class="form-control" type="hidden" placeholder="" id="u_id_organisasi"><br>
-                    <input class="form-control" type="text" placeholder="Nama Organisasi" id="u_nama"><br>
-                    <input class="form-control" type="text" placeholder="Tahun Organisasi" id="u_tahun"><br>
-                    <textarea rows="5" class="form-control" type="text" placeholder="Alamat Organisasi" id="u_alamat"></textarea><br>
-                    <select class="form-control" placeholder="Cabang Olahraga" id="u_cab">
-                        <option>Cabang Olahraga</option>
-                        @foreach ($cabangOlahraga as $row)
-                            <option value="{{ $row->cab_olahraga_id }}">{{ $row->cab_olahraga_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="setUpdate()" id="btnUpdate">Update</button>
+                    <button type="button" class="btn btn-primary" onclick="createOrUpdate(this)">Simpan</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -98,26 +91,64 @@
 
 @section('script')
     <script>
-        $("#tambah").click(function(e) {
-            e.preventDefault();
-            $("#formTambah").modal("show");
-        });
+        var _typeForm = null;
+        var _urlCreateOrUpdate = null;
+        var _formCreateOrUpdate = null;
 
-        $("#simpan").click(function(e) {
+        function showFormTambah() {
+            _typeForm = "create";
+            $("#formTambah").modal("show");
+            $("#idOrganisasi").val("");
+            $("#namaOrganisasi").val("");
+            $("#tahunOrganisasi").val("");
+            $("#alamatOrganisasi").val("");
+            $("#cabOlahraga").val("Pilih Cabang Olahraga");
+        }
+
+        function showFormUpdate(id, nama_organisasi, tahun_berdiri, alamat, cabang_olahragas_id) {
+            _typeForm = "update";
+            $("#formTambah").modal("show");
+            $("#idOrganisasi").val(id);
+            $("#namaOrganisasi").val(nama_organisasi);
+            $("#tahunOrganisasi").val(tahun_berdiri);
+            $("#alamatOrganisasi").val(alamat);
+            $("#cabOlahraga").val(cabang_olahragas_id);
+        }
+
+        function createOrUpdate(selector) {
+            switch (_typeForm) {
+                case "create":
+                    _urlCreateOrUpdate = "{{ url('/organisasi/simpan') }}";
+                    _formCreateOrUpdate = {
+                        _token: '{{ csrf_token() }}',
+                        nama_organisasi: $("#namaOrganisasi").val(),
+                        tahun_berdiri: $("#tahunOrganisasi").val(),
+                        alamat: $("#alamatOrganisasi").val(),
+                        cabang_olahragas_id: $("#cabOlahraga").val(),
+                    };
+                    break;
+                case "update":
+                    let id = $(".update[name=id]").val();
+                    _urlCreateOrUpdate = `{{ url('/organisasi') }}/update`;
+                    _formCreateOrUpdate = {
+                        _token: '{{ csrf_token() }}',
+                        id: $("#idOrganisasi").val(),
+                        nama_organisasi: $("#namaOrganisasi").val(),
+                        tahun_berdiri: $("#tahunOrganisasi").val(),
+                        alamat: $("#alamatOrganisasi").val(),
+                        cabang_olahraga_id: $("#cabOlahraga").val(),
+                    };
+                    break;
+            }
+
             $.ajax({
                 type: "post",
-                url: "{!! url('/organisasi/simpan') !!}",
-                data: {
-                    '_token': '{!! csrf_token() !!}',
-                    organisasi_name: $("#nama").val(),
-                    organisasi_tahun: $("#tahun").val(),
-                    organisasi_alamat: $("#alamat").val(),
-                    cab_olahraga_id: $("#cab").val()
-                },
+                url: _urlCreateOrUpdate,
+                data: _formCreateOrUpdate,
                 dataType: "json",
                 success: function(response) {
-                    $("#simpan").removeClass("btn-progress disable");
-                    $("#simpan").prop('disabled', false);
+                    $(selector).removeClass("btn-progress disable");
+                    $(selector).prop('disabled', false);
                     if (response.statusCode == "00") {
                         alert("Berhasil Menyimpan Data");
                         location.reload();
@@ -130,71 +161,29 @@
                     }
                 },
                 beforeSend: function() {
-                    $("#simpan").addClass("btn-progress disable");
-                    $("#simpan").prop('disabled', true);
+                    $(selector).addClass("btn-progress disable");
+                    $(selector).prop('disabled', true);
                 },
                 error: function(response) {
-                    $("#simpan").removeClass("btn-progress disable");
-                    $("#simpan").prop('disabled', false);
-                }
-            });
-        });
-
-        function update(nama, tahun, alamat, cab, id) {
-            $("#u_id_organisasi").val(id);
-            $("#u_nama").val(nama);
-            $("#u_tahun").val(tahun);
-            $("#u_alamat").val(alamat);
-            $("#u_cab").val(cab);
-            $("#formUpdate").modal("show");
-        }
-
-        function setUpdate() {
-            $.ajax({
-                type: "post",
-                url: "{!! url('/organisasi/update') !!}",
-                data: {
-                    '_token': '{!! csrf_token() !!}',
-                    organisasi_id: $("#u_id_organisasi").val(),
-                    organisasi_name: $("#u_nama").val(),
-                    organisasi_tahun: $("#u_tahun").val(),
-                    organisasi_alamat: $("#u_alamat").val(),
-                    cab_olahraga_id: $("#u_cab").val()
-                },
-                dataType: "json",
-                success: function(response) {
-                    $("#btnUpdate").removeClass("btn-progress disable");
-                    $("#btnUpdate").prop('disabled', false);
-                    if (response.statusCode == "00") {
-                        alert("Berhasil Mengupdate Data");
-                        location.reload();
-                    } else {
-                        try {
-                            alert(response[0][0]);
-                        } catch (error) {
-                            alert("Gagal saat menyimpan data");
-                        }
+                    let validationFail = [];
+                    for (const key in response.responseJSON.errors) {
+                        validationFail.push(response.responseJSON.errors[key][0]);
                     }
-                },
-                beforeSend: function() {
-                    $("#btnUpdate").addClass("btn-progress disable");
-                    $("#btnUpdate").prop('disabled', true);
-                },
-                error: function(response) {
-                    $("#btnUpdate").removeClass("btn-progress disable");
-                    $("#btnUpdate").prop('disabled', false);
+                    alert(validationFail.join('\n'));
+                    $(selector).removeClass("btn-progress disable");
+                    $(selector).prop('disabled', false);
                 }
             });
         }
 
-        function deleted(nama, id) {
-            if (confirm(`Apakah anda yakin ingin menghapus ${nama} dari organisasi`)) {
+        function deletedOrganisasi(namaOrganisasi, idOrganisasi) {
+            if (confirm(`Apakah anda yakin ingin menghapus ${namaOrganisasi} dari organisasi`)) {
                 $.ajax({
                     type: "post",
                     url: "{!! url('/organisasi/deleted') !!}",
                     data: {
                         '_token': '{!! csrf_token() !!}',
-                        organisasi_id: id,
+                        id: idOrganisasi,
                     },
                     dataType: "json",
                     success: function(response) {
