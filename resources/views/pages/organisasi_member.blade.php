@@ -1,46 +1,44 @@
 @extends('layout')
 @section('title')
-    <button class="btn btn-primary" onclick="showFormTambah()">Tambah Organisasi</button>
+    <button class="btn btn-primary" onclick="showFormTambah()">Tambah Member</button>
 @endsection
+
 @section('body')
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th class="text-center">Logo</th>
                 <th class="text-center">Nama</th>
-                <th class="text-center">Tahun</th>
-                <th class="text-center">Alamat</th>
-                <th class="text-center">Cabang Olahraga</th>
+                <th class="text-center">No Handphone</th>
+                <th class="text-center">Tinggi</th>
+                <th class="text-center">Berat</th>
+                <th class="text-center">Posisi</th>
                 <th class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($organisasi as $row)
+            @foreach ($organisasiMember as $row)
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td class="text-center">{{ $row->nama_organisasi }}</td>
-                    <td class="text-center">{{ $row->tahun_berdiri }}</td>
-                    <td class="text-center">{{ $row->alamat }}</td>
-                    <td class="text-center">{{ $row->cabangOlahraga->name_cab }}</td>
+                    <td class="text-center">{{ $row->nama }}</td>
+                    <td class="text-center">{{ $row->no_phone }}</td>
+                    <td class="text-center">{{ $row->tinggi }}</td>
+                    <td class="text-center">{{ $row->berat }}</td>
+                    <td class="text-center">{{ $row->posisi }}</td>
                     <td class="text-center">
                         <span>
-                            <a href="{{ url('organisasi/member') }}"><button class="btn btn-info">Member</button></a>
-                        </span>
-                        <span>
                             <button type="button" class="btn btn-primary" onclick="showFormUpdate(
-                                        '{{ $row->id }}',
-                                        '{{ $row->nama_organisasi }}',
-                                        '{{ $row->tahun_berdiri }}',
-                                        '{{ $row->alamat }}',
-                                        '{{ $row->cabangOlahraga->id }}')">Update
+                                                    '{{ $row->id }}',
+                                                    '{{ $row->nama }}',
+                                                    '{{ $row->tinggi }}',
+                                                    '{{ $row->berat }}',
+                                                    '{{ $row->no_phone }}',
+                                                    '{{ $row->posisi }}'
+                                                )">Update
                             </button>
                         </span>
                         <span>
-                            <button type="button" class="btn btn-danger" onclick="deletedOrganisasi(
-                                        '{{ $row->nama_organisasi }}',
-                                        '{{ $row->id }}')">Deleted
+                            <button type="button" class="btn btn-danger" onclick="deletedMember('{{ $row->nama }}','{{ $row->id }}')">Deleted
                             </button>
                         </span>
                     </td>
@@ -49,37 +47,42 @@
         </tbody>
     </table>
 @endsection
+
 @section('modal')
     <div class="modal fade" tabindex="-1" role="dialog" id="formTambah">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Organisasi</h5>
+                    <h5 class="modal-title">Tambah Team</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <input class="form-control update" type="hidden" id="idOrganisasi">
+                    <input class="form-control" type="hidden" id="idAnggota">
                     <div class="form-group">
-                        <label for="">Nama Organisasi</label>
-                        <input class="form-control create update" type="text" placeholder="Nama Organisasi" id="namaOrganisasi">
+                        <label for="">Nama Anggota</label>
+                        <input class="form-control" type="text" placeholder="Nama Anggota" id="namaAnggota">
                     </div>
                     <div class="form-group">
-                        <label for="">Tahun Organisasi</label>
-                        <input class="form-control create update" type="text" placeholder="Tahun Organisasi" id="tahunOrganisasi">
+                        <label for="">Tinggi Badan</label>
+                        <input class="form-control" type="text" placeholder="Tinggi Badan" id="tinggiBadan">
                     </div>
                     <div class="form-group">
-                        <label for="">Alamat</label>
-                        <textarea class="form-control create update" type="text" placeholder="Alamat Organisasi" id="alamatOrganisasi" style="height: 10em"></textarea>
+                        <label for="">Berat Badan</label>
+                        <input class="form-control" type="text" placeholder="Berat Badan" id="beratBadan">
                     </div>
                     <div class="form-group">
-                        <label for="">Cabang Olahraga</label>
-                        <select class="form-control create update" placeholder="Cabang Olahraga" id="cabOlahraga">
-                            <option>Pilih Cabang Olahraga</option>
-                            @foreach ($cabangOlahraga as $row)
-                                <option value="{{ $row->id }}">{{ $row->name_cab }}</option>
-                            @endforeach
+                        <label for="">No Phone</label>
+                        <input class="form-control" type="text" placeholder="No Phone" id="noPhone">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Posisi Anggota</label>
+                        <select class="form-control" id="posisiAnggota">
+                            <option value="">Pilih Posisi</option>
+                            <option value="Anggota">Anggota</option>
+                            <option value="Ketua">Ketua</option>
+                            <option value="Staf">Staf</option>
                         </select>
                     </div>
                 </div>
@@ -101,45 +104,52 @@
         function showFormTambah() {
             _typeForm = "create";
             $("#formTambah").modal("show");
-            $("#idOrganisasi").val("");
-            $("#namaOrganisasi").val("");
-            $("#tahunOrganisasi").val("");
-            $("#alamatOrganisasi").val("");
-            $("#cabOlahraga").val("Pilih Cabang Olahraga");
+            $("#namaAnggota").val("");
+            $("#tinggiBadan").val("");
+            $("#beratBadan").val("");
+            $("#noPhone").val("");
+            $("#posisiAnggota").val("");
         }
 
-        function showFormUpdate(id, nama_organisasi, tahun_berdiri, alamat, cabang_olahragas_id) {
+        function showFormUpdate(idAnggota, namaAnggota, tinggiBadan, beratBadan, noPhone, posisiAnggota) {
             _typeForm = "update";
             $("#formTambah").modal("show");
-            $("#idOrganisasi").val(id);
-            $("#namaOrganisasi").val(nama_organisasi);
-            $("#tahunOrganisasi").val(tahun_berdiri);
-            $("#alamatOrganisasi").val(alamat);
-            $("#cabOlahraga").val(cabang_olahragas_id);
+            $("#idAnggota").val(idAnggota);
+            $("#namaAnggota").val(namaAnggota);
+            $("#tinggiBadan").val(tinggiBadan);
+            $("#beratBadan").val(beratBadan);
+            $("#noPhone").val(noPhone);
+            $("#posisiAnggota").val(posisiAnggota);
         }
+
+
 
         function createOrUpdate(selector) {
             switch (_typeForm) {
                 case "create":
-                    _urlCreateOrUpdate = "{{ url('/organisasi/simpan') }}";
+                    _urlCreateOrUpdate = "{{ url('/member/simpan') }}";
                     _formCreateOrUpdate = {
                         _token: '{{ csrf_token() }}',
-                        nama_organisasi: $("#namaOrganisasi").val(),
-                        tahun_berdiri: $("#tahunOrganisasi").val(),
-                        alamat: $("#alamatOrganisasi").val(),
-                        cabang_olahragas_id: $("#cabOlahraga").val(),
+                        nama: $("#namaAnggota").val(),
+                        tinggi: $("#tinggiBadan").val(),
+                        berat: $("#beratBadan").val(),
+                        no_phone: $("#noPhone").val(),
+                        organisasi_id: '{!! $idOrganisasi !!}',
+                        posisi: $("#posisiAnggota").val(),
                     };
                     break;
                 case "update":
                     let id = $(".update[name=id]").val();
-                    _urlCreateOrUpdate = `{{ url('/organisasi') }}/update`;
+                    _urlCreateOrUpdate = `{{ url('/member/update') }}`;
                     _formCreateOrUpdate = {
                         _token: '{{ csrf_token() }}',
-                        id: $("#idOrganisasi").val(),
-                        nama_organisasi: $("#namaOrganisasi").val(),
-                        tahun_berdiri: $("#tahunOrganisasi").val(),
-                        alamat: $("#alamatOrganisasi").val(),
-                        cabang_olahraga_id: $("#cabOlahraga").val(),
+                        id: $("#idAnggota").val(),
+                        nama: $("#namaAnggota").val(),
+                        tinggi: $("#tinggiBadan").val(),
+                        berat: $("#beratBadan").val(),
+                        no_phone: $("#noPhone").val(),
+                        organisasi_id: '{!! $idOrganisasi !!}',
+                        posisi: $("#posisiAnggota").val(),
                     };
                     break;
             }
@@ -179,14 +189,14 @@
             });
         }
 
-        function deletedOrganisasi(namaOrganisasi, idOrganisasi) {
-            if (confirm(`Apakah anda yakin ingin menghapus ${namaOrganisasi} dari organisasi`)) {
+        function deletedMember(namaMember, idMember) {
+            if (confirm(`Apakah anda yakin ingin menghapus ${namaMember} dari organisasi`)) {
                 $.ajax({
                     type: "post",
-                    url: "{!! url('/organisasi/deleted') !!}",
+                    url: "{!! url('/member/deleted') !!}",
                     data: {
                         '_token': '{!! csrf_token() !!}',
-                        id: idOrganisasi,
+                        id: idMember,
                     },
                     dataType: "json",
                     success: function(response) {

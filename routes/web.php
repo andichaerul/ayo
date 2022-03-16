@@ -21,8 +21,11 @@ Route::post("/organisasi/simpan", 'OrganisasiController@simpan');
 Route::post("/organisasi/update", 'OrganisasiController@update');
 Route::post("/organisasi/deleted", 'OrganisasiController@deleted');
 
-Route::get("/list-member/{id}", 'ListMemberController@index');
-Route::post("/list-member/{id}/simpan", 'ListMemberController@simpan');
+// member
+Route::get("/member/{id}", 'MemberController@index');
+Route::post("/member/simpan", 'MemberController@simpan');
+Route::post("/member/update", 'MemberController@update');
+Route::post("/member/deleted", 'MemberController@deleted');
 
 // Team
 Route::get("/team", 'TeamController@index');
@@ -31,8 +34,10 @@ Route::post("/team/update", 'TeamController@update');
 Route::post("/team/deleted", 'TeamController@delete');
 
 // Member
-Route::get("/member", 'MemberController@index');
-Route::post("/member/simpan", 'MemberController@simpan');
+// Route::get("/list-member/{id}", 'ListMemberController@index');
+// Route::post("/list-member/{id}/simpan", 'ListMemberController@simpan');
+// Route::get("/member", 'MemberController@index');
+// Route::post("/member/simpan", 'MemberController@simpan');
 
 // Acara
 Route::get("/jadwal-acara", 'JadwalAcaraController@index');

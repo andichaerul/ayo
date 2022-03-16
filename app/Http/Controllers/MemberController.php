@@ -2,58 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use App\MemberModel;
 use App\CabangOlahraga;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\DeletedRequestMember;
+use App\Http\Requests\StoreRequestMember;
+use App\Http\Requests\UpdateRequestMember;
+use App\OrganisasiMember;
 
 class MemberController extends Controller
 {
-    public function index()
+    public function index($id)
     {
         $view = [
             "no" => 1,
-            "titlePage" => "Member",
-            "member" => MemberModel::all(),
-            "cabOlahraga" => CabangOlahraga::all()
+            "idOrganisasi" => $id,
+            "titlePage" => "Organisasi Member",
+            "organisasiMember" => OrganisasiMember::where('organisasi_id', $id)->get(),
         ];
-        return view('member.index', $view);
+        return view('pages.organisasi_member', $view);
     }
 
-    public function simpan(Request $request)
+    public function simpan(StoreRequestMember $storeRequestMember)
     {
-        $validasi = Validator::make(Input::all(), [
-            "member_name" => "required",
-            "member_height" => "required|integer",
-            "member_weight" => "required|integer",
-            "member_position" => "required",
-            "cab_olahraga_id" => "required|exists:cab_olahraga,cab_olahraga_id",
-        ]);
-
-        if ($validasi->fails()) {
+        $member = new OrganisasiMember;
+        $member->nama = $storeRequestMember->post("nama");
+        $member->tinggi = $storeRequestMember->post("tinggi");
+        $member->berat = $storeRequestMember->post("berat");
+        $member->no_phone = $storeRequestMember->post("no_phone");
+        $member->organisasi_id = $storeRequestMember->post("organisasi_id");
+        $member->posisi = $storeRequestMember->post("posisi");
+        if ($member->save()) {
             return response()->json([
-                $validasi->getMessageBag()->all()
+                "statusCode" => "00",
+                "messages" => "Berhasil menyimpan data"
             ]);
         }
+    }
 
-        $member = new MemberModel();
-        $member->member_name = $request->post("member_name");
-        $member->member_height = $request->post("member_height");
-        $member->member_weight = $request->post("member_weight");
-        $member->member_position = $request->post("member_position");
-        $member->cab_olahraga_id = $request->post("cab_olahraga_id");
-        $member->save();
-        try {
-
-        } catch (\Throwable $th) {
+    public function update(UpdateRequestMember $updateRequestMember)
+    {
+        $member = OrganisasiMember::find($updateRequestMember->post("id"));
+        $member->nama = $updateRequestMember->post("nama");
+        $member->tinggi = $updateRequestMember->post("tinggi");
+        $member->berat = $updateRequestMember->post("berat");
+        $member->no_phone = $updateRequestMember->post("no_phone");
+        $member->organisasi_id = $updateRequestMember->post("organisasi_id");
+        $member->posisi = $updateRequestMember->post("posisi");
+        if ($member->save()) {
             return response()->json([
-                "statusCode" => "01"
+                "statusCode" => "00",
+                "messages" => "Berhasil update data"
             ]);
         }
-        return response()->json([
-            "statusCode" => "00",
-            "messages" => "Berhasil menyimpan data"
-        ]);
+    }
+
+    public function deleted(DeletedRequestMember $deletedRequestMember)
+    {
+        $member = OrganisasiMember::find($deletedRequestMember->post("id"));
+        if ($member->delete()) {
+            return response()->json([
+                "statusCode" => "00",
+                "messages" => "Berhasil menghapus data"
+            ]);
+        }
     }
 }
