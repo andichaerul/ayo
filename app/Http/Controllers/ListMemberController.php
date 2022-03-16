@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\TeamModel;
 use App\MemberModel;
-use App\CabangOlahragaModel;
+use App\CabangOlahraga;
 use App\TeamMemberModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -21,7 +21,7 @@ class ListMemberController extends Controller
             "no" => 1,
             "titlePage" => "List Member",
             "member" => MemberModel::where('cab_olahraga_id', $cabOlahragaId)->get(),
-            // "cabOlahraga" => CabangOlahragaModel::all()
+            // "cabOlahraga" => CabangOlahraga::all()
         ];
         return view('team.list_member.index', $view);
     }

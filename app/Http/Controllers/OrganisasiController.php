@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\OrganisasiModel;
-use App\CabangOlahragaModel;
+use App\Organisasi;
+use App\CabangOlahraga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -15,10 +15,10 @@ class OrganisasiController extends Controller
         $view = [
             "no" => 1,
             "titlePage" => "Organisasi",
-            "cabangOlahraga" => CabangOlahragaModel::all(),
-            "organisasi" => OrganisasiModel::all()
+            "cabangOlahraga" => CabangOlahraga::all(),
+            "organisasi" => Organisasi::all()
         ];
-        return view('organisasi.index', $view);
+        return view('pages.organisasi', $view);
     }
 
     public function simpan(Request $request)
@@ -36,7 +36,7 @@ class OrganisasiController extends Controller
             ]);
         }
 
-        $organisasi = new OrganisasiModel;
+        $organisasi = new Organisasi;
         $organisasi->organisasi_name = $request->post("organisasi_name");
         $organisasi->organisasi_tahun = $request->post("organisasi_tahun");
         $organisasi->organisasi_alamat = $request->post("organisasi_alamat");
@@ -72,7 +72,7 @@ class OrganisasiController extends Controller
             ]);
         }
 
-        $organisasi =  OrganisasiModel::find($request->post("organisasi_id"));
+        $organisasi =  Organisasi::find($request->post("organisasi_id"));
         $organisasi->organisasi_name = $request->post("organisasi_name");
         $organisasi->organisasi_tahun = $request->post("organisasi_tahun");
         $organisasi->organisasi_alamat = $request->post("organisasi_alamat");
@@ -105,7 +105,7 @@ class OrganisasiController extends Controller
 
     public function deleted(Request $request)
     {
-        $organisasi =  OrganisasiModel::find($request->post("organisasi_id"));
+        $organisasi =  Organisasi::find($request->post("organisasi_id"));
         try {
             $organisasi->delete();
         } catch (\Throwable $th) {

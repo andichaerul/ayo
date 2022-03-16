@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\CabangOlahragaModel;
+use App\CabangOlahraga;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\RequestCabangOlahraga;
+use App\Http\Requests\StoreRequestCabangOlahraga;
+use App\Http\Requests\UpdateRequestCabangOlahraga;
 use Symfony\Component\HttpFoundation\Response;
 
 class CabangOlahragaController extends Controller
@@ -15,81 +18,44 @@ class CabangOlahragaController extends Controller
         $view = [
             "no" => 1,
             "titlePage" => "Cabang Olahraga",
-            "cabOlahraga" => CabangOlahragaModel::all()
+            "cabOlahraga" => CabangOlahraga::all()
         ];
-        return view('cabang_olahraga.index', $view);
+        return view('pages.cabang_olahraga', $view);
     }
 
-    public function simpan(Request $request)
+    public function simpan(StoreRequestCabangOlahraga $requestCabangOlahraga)
     {
-        $validasi = Validator::make(Input::all(), [
-            "cab_olahraga_name" => "required|max:50|unique:cab_olahraga,cab_olahraga_name"
-        ]);
-
-        if ($validasi->fails()) {
+        $cabangOlahraga = new CabangOlahraga();
+        $cabangOlahraga->name_cab = $requestCabangOlahraga->post("name_cab");
+        if ($cabangOlahraga->save()) {
             return response()->json([
-                $validasi->getMessageBag()->all()
+                "statusCode" => "00",
+                "messages" => "Berhasil menyimpan data"
             ]);
         }
-
-        $cabangOlahraga = new CabangOlahragaModel;
-        $cabangOlahraga->cab_olahraga_name = $request->post("cab_olahraga_name");
-        $cabangOlahraga->users_id = session()->get('userId');
-        try {
-            $cabangOlahraga->save();
-        } catch (\Throwable $th) {
-            return response()->json([
-                "statusCode" => "01"
-            ]);
-        }
-        return response()->json([
-            "statusCode" => "00",
-            "messages" => "Berhasil menyimpan data"
-        ]);
     }
 
-    public function update(Request $request)
+    public function update(UpdateRequestCabangOlahraga $updateRequestCabangOlahraga)
     {
-        $validasi = Validator::make(Input::all(), [
-            "cab_olahraga_name" => "required|max:50|unique:cab_olahraga,cab_olahraga_name"
-        ]);
-
-        if ($validasi->fails()) {
+        $cabangOlahraga = CabangOlahraga::find($updateRequestCabangOlahraga->post("id"));
+        $cabangOlahraga->name_cab = $updateRequestCabangOlahraga->post("name_cab");
+        if ($cabangOlahraga->save()) {
             return response()->json([
-                $validasi->getMessageBag()->all()
+                "statusCode" => "00",
+                "messages" => "Berhasil Update data"
             ]);
         }
-
-        $cabangOlahraga =  CabangOlahragaModel::find($request->post("cab_olahraga_id"));
-        $cabangOlahraga->cab_olahraga_name = $request->post("cab_olahraga_name");
-        try {
-            $cabangOlahraga->save();
-        } catch (\Throwable $th) {
-            return response()->json([
-                "statusCode" => "01",
-            ]);
-        }
-        return response()->json([
-            "statusCode" => "00",
-            "messages" => "Berhasil menyimpan data"
-        ]);
     }
 
 
-    public function deleted(Request $request)
+    public function deleted(Request $request, $id)
     {
-        $cabangOlahraga =  CabangOlahragaModel::find($request->post("cab_olahraga_id"));
-        try {
-            $cabangOlahraga->delete();
-        } catch (\Throwable $th) {
+        $cabangOlahraga =  CabangOlahraga::find($id);
+        if ($cabangOlahraga->delete()) {
             return response()->json([
-                "statusCode" => "01",
-                "messages" => $th
+                "statusCode" => "00",
+                "messages" => "Berhasil menyimpan data"
             ]);
         }
-        return response()->json([
-            "statusCode" => "00",
-            "messages" => "Berhasil menyimpan data"
-        ]);
     }
 }

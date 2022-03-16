@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\UserModel;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -15,10 +15,10 @@ class LoginController extends Controller
 
     public function auth(Request $request)
     {
-        $userData = UserModel::where('users_username', $request->post('username'))
+        $userData = User::where('username', $request->post('username'))
             ->first();
         if ($userData) {
-            if (password_verify($request->post('password'), $userData->users_password)) {
+            if (password_verify($request->post('password'), $userData->password)) {
                 $this->setSessionLogin($userData);
                 return redirect('/');
             }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\MemberModel;
-use App\CabangOlahragaModel;
+use App\CabangOlahraga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +16,7 @@ class MemberController extends Controller
             "no" => 1,
             "titlePage" => "Member",
             "member" => MemberModel::all(),
-            "cabOlahraga" => CabangOlahragaModel::all()
+            "cabOlahraga" => CabangOlahraga::all()
         ];
         return view('member.index', $view);
     }
