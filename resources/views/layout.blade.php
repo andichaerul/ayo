@@ -33,17 +33,7 @@
                             <div class="d-sm-none d-lg-inline-block">{{ session()->get('namaLengkap') }}</div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-title">Logged in 5 min ago</div>
-                            <a href="features-profile.html" class="dropdown-item has-icon">
-                                <i class="far fa-user"></i> Profile
-                            </a>
-                            <a href="features-activities.html" class="dropdown-item has-icon">
-                                <i class="fas fa-bolt"></i> Activities
-                            </a>
-                            <a href="features-settings.html" class="dropdown-item has-icon">
-                                <i class="fas fa-cog"></i> Settings
-                            </a>
-                            <div class="dropdown-divider"></div>
+
                             <a href="#" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
@@ -61,10 +51,8 @@
                     </div>
                     <ul class="sidebar-menu">
                         <li class="menu-header">Master Data</li>
-                        <li><a class="nav-link" href="{{ url('/cabang-olahraga') }}"><i class="fas fa-pencil-ruler"></i> <span>Cabang Olahraga</span></a></li>
-                        <li><a class="nav-link" href="{{ url('/organisasi') }}"><i class="fas fa-pencil-ruler"></i> <span>Organisasi</span></a></li>
-                        <li><a class="nav-link" href="{{ url('/team') }}"><i class="fas fa-pencil-ruler"></i> <span>Team</span></a></li>
-                        <li><a class="nav-link" href="{{ url('/member') }}"><i class="fas fa-pencil-ruler"></i> <span>Member</span></a></li>
+                        <li><a class="nav-link" href="{{ url('/cabang-olahraga') }}"><i class="fas fa-fire"></i> <span>Cabang Olahraga</span></a></li>
+                        <li><a class="nav-link" href="{{ url('/organisasi') }}"><i class="far fa-file-alt"></i> <span>Organisasi</span></a></li>
                         <li class="menu-header">Organisasi</li>
                         <li><a class="nav-link" href="{{ url('/jadwal-acara') }}"><i class="fas fa-pencil-ruler"></i> <span>Jadwal Acara</span></a></li>
                     </ul>
@@ -97,10 +85,10 @@
             @yield('modal')
             <footer class="main-footer">
                 <div class="footer-left">
-                    Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval Azhar</a>
+
                 </div>
                 <div class="footer-right">
-                    2.3.0
+
                 </div>
             </footer>
         </div>

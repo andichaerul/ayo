@@ -33,11 +33,9 @@ Route::post("/team/simpan", 'TeamController@simpan');
 Route::post("/team/update", 'TeamController@update');
 Route::post("/team/deleted", 'TeamController@delete');
 
-// Member
-// Route::get("/list-member/{id}", 'ListMemberController@index');
-// Route::post("/list-member/{id}/simpan", 'ListMemberController@simpan');
-// Route::get("/member", 'MemberController@index');
-// Route::post("/member/simpan", 'MemberController@simpan');
-
 // Acara
 Route::get("/jadwal-acara", 'JadwalAcaraController@index');
+Route::post("/jadwal-acara/simpan", 'JadwalAcaraController@simpan');
+Route::post("/jadwal-acara/get-member", 'JadwalAcaraController@getMember');
+Route::post("/jadwal-acara/selesai", 'JadwalAcaraController@selesai');
+Route::post("/jadwal-acara/get-resume", 'JadwalAcaraController@getResume');

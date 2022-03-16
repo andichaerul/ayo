@@ -26,7 +26,7 @@
                     <td class="text-center">{{ $row->cabangOlahraga->name_cab }}</td>
                     <td class="text-center">
                         <span>
-                            <a href="{{ url('organisasi/member') }}"><button class="btn btn-info">Member</button></a>
+                            <a href="{{ url('member') }}/{{ $row->id }}"><button class="btn btn-info">Member</button></a>
                         </span>
                         <span>
                             <button type="button" class="btn btn-primary" onclick="showFormUpdate(
