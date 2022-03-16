@@ -27,6 +27,8 @@ Route::post("/list-member/{id}/simpan", 'ListMemberController@simpan');
 // Team
 Route::get("/team", 'TeamController@index');
 Route::post("/team/simpan", 'TeamController@simpan');
+Route::post("/team/update", 'TeamController@update');
+Route::post("/team/deleted", 'TeamController@delete');
 
 // Member
 Route::get("/member", 'MemberController@index');
